@@ -9,15 +9,15 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 app.set("port", PORT);
 app.set("env", NODE_ENV);
+app.use(express.json()); // parse application/json
+require("./routes")(app); // Calling the routes module
 
-app.get("/", () => {
-  console.log("Test successful");
-});
+module.exports = app;
 
 app.listen(PORT, () => {
-  console.log(
-    `Express Server started on Port ${app.get(
-      "port"
-    )} | Environment : ${app.get("env")}`
-  );
+    console.log(
+        `Express Server started on Port ${app.get(
+            "port"
+        )} | Environment : ${app.get("env")}`
+    );
 });
