@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const db = require("./db"); // Connecting to MongoDB
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 app.set("port", PORT);
