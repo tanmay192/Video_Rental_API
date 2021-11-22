@@ -8,6 +8,7 @@ const {
     verifyTokenAndAdmin,
 } = require("../middlewares/verifyToken");
 
+////// User details update (users only)
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     if (req.body.password) {
         req.body.password = CryptoJS.AES.encrypt(
@@ -37,6 +38,7 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
+////// User delete (users only)
 router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
@@ -48,6 +50,7 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
+////// Getting a user (admin only)
 router.get("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -61,6 +64,7 @@ router.get("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
+////// Getting all users (admin only)
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
         const users = await User.find();
