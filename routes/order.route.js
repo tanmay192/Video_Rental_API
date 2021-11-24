@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const Cart = require("../models/Cart");
+const Order = require("../models/Order");
 const CryptoJS = require("crypto-js");
 const {
     verifyToken,
@@ -8,13 +8,13 @@ const {
     verifyTokenAndAdmin,
 } = require("../middlewares/verifyToken");
 
-////// Adding a cart (any logged in user)
+////// Creating an order (users only)
 router.post("/", verifyToken, async (req, res) => {
-    const newCart = new Cart(req.body);
+    const newOrder = new Order(req.body);
 
     try {
-        const savedCart = await newCart.save();
-        res.status(201).send(savedCart);
+        const savedOrder = await newOrder.save();
+        res.status(201).send(savedOrder);
     } catch (err) {
         return res.status(500).send({
             error: err || "Something went wrong.",
@@ -22,10 +22,10 @@ router.post("/", verifyToken, async (req, res) => {
     }
 });
 
-////// Updating a cart (users only)
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+////// Updating an order (admin only)
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
-        const updatedCart = await Cart.findByIdAndUpdate(
+        const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
             {
                 $set: req.body,
@@ -33,7 +33,7 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
             { new: true }
         );
 
-        res.status(200).send(updatedCart);
+        res.status(200).send(updatedOrder);
     } catch (err) {
         return res.status(500).send({
             error: err || "Something went wrong.",
@@ -41,11 +41,11 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
-////// Deleting a cart (users only)
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+////// Deleting an order (admin only)
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
-        await Cart.findByIdAndDelete(req.params.id);
-        res.status(200).send("Video deleted successfully");
+        await Order.findByIdAndDelete(req.params.id);
+        res.status(200).send("Order deleted successfully");
     } catch (err) {
         return res.status(500).send({
             error: err || "Something went wrong.",
@@ -53,11 +53,11 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
-////// Getting user cart (users only)
+////// Getting user orders (users only)
 router.get("/search/:userId", verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const cart = await Cart.findOne({ userId: req.params.userId });
-        res.status(200).send(cart);
+        const orders = await Order.findOne({ userId: req.params.userId });
+        res.status(200).send(orders);
     } catch (err) {
         return res.status(500).send({
             error: err || "Something went wrong.",
@@ -65,11 +65,11 @@ router.get("/search/:userId", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
-////// Getting all carts (admin only)
+////// Getting all orders (admin only)
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
-        const carts = await Cart.find();
-        res.status(200).send(carts);
+        const orders = await Order.find();
+        res.status(200).send(orders);
     } catch (err) {
         return res.status(500).send({
             error: err || "Something went wrong.",
