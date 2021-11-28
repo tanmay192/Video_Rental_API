@@ -4,7 +4,7 @@ The project is a backend API for a Video Rental App. It provide appropriate resp
 
 ## Setup Guide
 
-Create a .env file after cloning and add env variables MONGO_URL=<mongodb-url>, SEC_PASS=<passcode>, JWT_SEC = <passcode>.
+Create a .env file after cloning and add env variables MONGO_URL, SEC_PASS, JWT_SEC.
 
 ```
 git clone https://github.com/tanmay192/Video_Rental_API.git
